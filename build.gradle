@@ -2,8 +2,8 @@ group 'org.qbic'
 version '0.1'
 
 apply plugin: 'java'
+apply plugin: 'maven'
 
-sourceCompatibility = 1.5
 
 repositories {
     mavenCentral()
