@@ -6,4 +6,8 @@ public class Main {
         System.out.println("Teschd");
         System.out.println("hihiu");
     }
+
+    public static Boolean isBeautiful(){
+        return true;
+    }
 }
