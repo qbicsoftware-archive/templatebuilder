@@ -30,14 +30,22 @@ dependencies {
 
 
 bintray {
-    user = 'sven1103'
-    key = 'b4b1de6ba7d50eb6611336604a7d44938611dec8'
+    user = bintrayUser
+    key = bintrayKey
     publications = ['MyPublication']
+    publish = true
     pkg {
         repo = 'qbic-repos'
         name = 'templatebuilder'
         licenses = ['MIT']
         vcsUrl = "https://github.com/qbicsoftware/templatebuilder"
+        version {
+            name = 'beta'
+            desc = 'Test'
+            released  = new Date()
+            vcsTag = version
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
 
     }
 }
