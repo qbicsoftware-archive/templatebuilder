@@ -16,13 +16,13 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()
     }
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'java'
     apply plugin: 'com.jfrog.bintray'
 }
+
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
