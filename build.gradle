@@ -1,14 +1,75 @@
 group 'org.qbic'
-version '0.1'
-
-apply plugin: 'java'
-apply plugin: 'maven'
+version '0.2'
 
 
-repositories {
-    mavenCentral()
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+        //classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0"
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java'
+    apply plugin: 'com.jfrog.bintray'
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+bintray {
+    user = 'sven1103'
+    key = 'b4b1de6ba7d50eb6611336604a7d44938611dec8'
+    publications = ['MyPublication']
+    pkg {
+        repo = 'qbic-repos'
+        name = 'templatebuilder'
+        licenses = ['MIT']
+        vcsUrl = "https://github.com/qbicsoftware/templatebuilder"
+
+    }
+}
+
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// add javadoc/source jar tasks as artifacts
+artifacts {
+    archives sourcesJar //, javadocJar
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'org.qbic'
+            artifactId 'templatebuilder'
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+        }
+    }
 }
