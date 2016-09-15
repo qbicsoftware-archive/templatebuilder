@@ -1,0 +1,123 @@
+# Example YAML configuration file for the template builder.
+
+!org.qbic.collections.ImmiGeneProject
+numberOfPatients: 10
+
+# Donor configuration
+donor:
+    id: D
+    samples:
+        - !org.qbic.collections.Sample
+           tissue: Blood
+           id: B
+           timepoints:
+               - t-1
+           aliquots: 5
+           experiments:
+               - !org.qbic.collections.Experiment
+                 experiment: exon
+                 id: D
+                 aliquots: 5
+               - !org.qbic.collections.Experiment
+                  experiment: immuno
+                  id: I
+                  aliquots: 5
+        - !org.qbic.collections.Sample
+           tissue: Urine
+           id: U
+           timepoints:
+               - t-1
+           aliquots: 5
+           experiments:
+               - !org.qbic.collections.Experiment
+                 experiment: metagenome
+                 id: D
+                 aliquots: 5
+               - !org.qbic.collections.Experiment
+                  experiment: immuno
+                  id: I
+                  aliquots: 5
+        - !org.qbic.collections.Sample
+           tissue: Feces
+           id: F
+           timepoints:
+               - t-1
+           aliquots: 5
+           experiments:
+               - !org.qbic.collections.Experiment
+                 experiment: immuno
+                 id: I
+                 aliquots: 5
+               - !org.qbic.collections.Experiment
+                  experiment: metagenome
+                  id: D
+                  aliquots: 5
+
+# Recipient configuration
+donor:
+    id: R
+    samples:
+        - !org.qbic.collections.Sample
+           tissue: Blood
+           id: B
+           timepoints:
+               - t-1
+               - t5
+               - t6
+               - t7
+           aliquots: 5
+           experiments:
+               - !org.qbic.collections.Experiment
+                 experiment: exon
+                 id: D
+                 aliquots: 5
+               - !org.qbic.collections.Experiment
+                  experiment: immuno
+                  id: I
+                  aliquots: 5
+        - !org.qbic.collections.Sample
+           tissue: Urine
+           id: U
+           timepoints:
+               - t-1
+               - t0
+               - t1
+               - t2
+               - t3
+               - t4
+               - t5
+               - t6
+               - t7
+           aliquots: 5
+           experiments:
+               - !org.qbic.collections.Experiment
+                 experiment: metagenome
+                 id: D
+                 aliquots: 5
+               - !org.qbic.collections.Experiment
+                  experiment: immuno
+                  id: I
+                  aliquots: 5
+        - !org.qbic.collections.Sample
+           tissue: Feces
+           id: F
+           timepoints:
+              - t-1
+              - t0
+              - t1
+              - t2
+              - t3
+              - t4
+              - t5
+              - t6
+              - t7
+           aliquots: 5
+           experiments:
+               - !org.qbic.collections.Experiment
+                 experiment: immuno
+                 id: I
+                 aliquots: 5
+               - !org.qbic.collections.Experiment
+                  experiment: metagenome
+                  id: D
+                  aliquots: 5

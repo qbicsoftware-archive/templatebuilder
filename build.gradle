@@ -25,6 +25,9 @@ allprojects {
 
 
 dependencies {
+    compile group: 'org.qbic', name: 'immigene-collections', version: '0.1_3'
+    compile group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.09'
+    compile group: 'org.qbic', name: 'namebuilder', version: '0.1_4'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
@@ -80,4 +83,8 @@ publishing {
             }
         }
     }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
