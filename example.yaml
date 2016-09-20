@@ -3,16 +3,18 @@
 !org.qbic.collections.ImmiGeneProject
 numberOfPatients: 10
 
+space: QIMMU
+
 # Donor configuration
 donor:
     id: D
     samples:
         - !org.qbic.collections.Sample
-           tissue: Blood
+           tissue: BLOOD_PLASMA
            id: B
            timepoints:
                - t-1
-           aliquots: 5
+           aliquots: 2
            experiments:
                - !org.qbic.collections.Experiment
                  experiment: exon
@@ -23,11 +25,11 @@ donor:
                   id: I
                   aliquots: 5
         - !org.qbic.collections.Sample
-           tissue: Urine
+           tissue: URINE
            id: U
            timepoints:
                - t-1
-           aliquots: 5
+           aliquots: 2
            experiments:
                - !org.qbic.collections.Experiment
                  experiment: metagenome
@@ -38,11 +40,11 @@ donor:
                   id: I
                   aliquots: 5
         - !org.qbic.collections.Sample
-           tissue: Feces
+           tissue: FECES
            id: F
            timepoints:
                - t-1
-           aliquots: 5
+           aliquots: 2
            experiments:
                - !org.qbic.collections.Experiment
                  experiment: immuno
@@ -54,7 +56,7 @@ donor:
                   aliquots: 5
 
 # Recipient configuration
-donor:
+recepient:
     id: R
     samples:
         - !org.qbic.collections.Sample
@@ -65,7 +67,7 @@ donor:
                - t5
                - t6
                - t7
-           aliquots: 5
+           aliquots: 2
            experiments:
                - !org.qbic.collections.Experiment
                  experiment: exon
@@ -88,7 +90,7 @@ donor:
                - t5
                - t6
                - t7
-           aliquots: 5
+           aliquots: 2
            experiments:
                - !org.qbic.collections.Experiment
                  experiment: metagenome
@@ -111,7 +113,7 @@ donor:
               - t5
               - t6
               - t7
-           aliquots: 5
+           aliquots: 2
            experiments:
                - !org.qbic.collections.Experiment
                  experiment: immuno

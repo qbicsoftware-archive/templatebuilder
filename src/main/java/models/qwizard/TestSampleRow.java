@@ -15,7 +15,7 @@ public class TestSampleRow extends AbstractQWizardRow {
         super(barcodeFactory);
         this.setSampleType(SAMPLE_TYPE);
         this.setExperiment(EXPERIMENT_TYPE);
-
+        this.setIdentifier(barcodeFactory.getBarcode());
     }
 
 

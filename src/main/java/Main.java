@@ -1,11 +1,9 @@
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.qbic.collections.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -39,13 +37,17 @@ public class Main {
             System.out.println("Parsing finished.");
         }
 
-        IProjectTranslator translator = new ImmiGeneTranslator();
+        IProjectTranslator translator = new ImmiGeneTranslator(project);
 
         try{
-            translator.createTSV(Paths.get("/home/sven1103/Downloads/"));
+            translator.createTSV(Paths.get("/home/sven1103/Downloads/test.tsv"));
         } catch (Exception e){
             System.err.println("Could not create the TSV file because of:");
-            System.err.println(e.getMessage());
+            if (e.getMessage() == null){
+                e.printStackTrace();
+            } else {
+                System.err.println(e.getMessage());
+            }
             System.exit(1);
         } finally {
             System.out.println("Exporting to QWizard-like tsv file done.");
@@ -53,7 +55,4 @@ public class Main {
 
     }
 
-    public static Boolean isBeautiful(){
-        return true;
-    }
 }

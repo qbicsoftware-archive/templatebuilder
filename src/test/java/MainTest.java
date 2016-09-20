@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 public class MainTest {
     @Test
     public void isBeautiful() throws Exception {
-        assertEquals(true, Main.isBeautiful());
+
     }
 
 }

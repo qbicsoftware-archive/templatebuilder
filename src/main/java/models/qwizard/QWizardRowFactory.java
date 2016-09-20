@@ -7,7 +7,15 @@ import models.barcode.BarcodeProducer;
  */
 public class QWizardRowFactory {
 
-    private final BarcodeProducer barcodeFactory = BarcodeProducer.getInstance("QICGC", 1, 'A');
+    private final BarcodeProducer barcodeFactory;
+
+    private QWizardRowFactory(){
+        this.barcodeFactory = BarcodeProducer.getInstance("Dummy", 1, 'A');
+    }
+
+    public QWizardRowFactory(String space){
+        this.barcodeFactory = BarcodeProducer.getInstance(space, 1, 'A');
+    }
 
     public AbstractQWizardRow getWizardRow(RowTypes rowType) {
         AbstractQWizardRow requestedRowType;
