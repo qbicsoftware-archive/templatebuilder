@@ -20,10 +20,19 @@ import java.nio.file.Path;
  */
 public class ImmiGeneTranslator implements IProjectTranslator {
 
+    /**
+     * The ImMiGene object instance
+     */
     private ImmiGeneProject immiGeneProject;
 
+    /**
+     * StringBuilder for creating the TSV content
+     */
     private StringBuilder tsvContent;
 
+    /**
+     *
+     */
     private QWizardRowFactory factory;
 
     private Integer patientCounter;
@@ -32,10 +41,13 @@ public class ImmiGeneTranslator implements IProjectTranslator {
 
     private SecondaryName secondaryName;
 
+    private Integer experimentCounter;
+
 
     public ImmiGeneTranslator(ImmiGeneProject immiGeneProject){
         this.immiGeneProject = immiGeneProject;
         this.tsvContent = new StringBuilder();
+        this.experimentCounter=1;
     }
 
     @Override
@@ -49,7 +61,7 @@ public class ImmiGeneTranslator implements IProjectTranslator {
         try (BufferedWriter writer = Files.newBufferedWriter(outputFile)){
 
             // Init QWizard row factory
-            this.factory = new QWizardRowFactory(immiGeneProject.space);
+            this.factory = new QWizardRowFactory(immiGeneProject.projectID);
             // Create empty secondary name instance
             this.secondaryName = new SecondaryName();
 
@@ -78,6 +90,7 @@ public class ImmiGeneTranslator implements IProjectTranslator {
 
     }
 
+
     /**
      * Creates patient object in openBis representation
      * @param patient The patient object
@@ -89,11 +102,12 @@ public class ImmiGeneTranslator implements IProjectTranslator {
 
         AbstractQWizardRow entity = factory.getWizardRow(RowTypes.ENTITY);
         entity.setSpace(immiGeneProject.space);
-        entity.setExperiment(String.format("%s%s%s",immiGeneProject.space, 'E', patientCounter));
-        entity.setEntityNumber(entityCounter);
+        entity.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', experimentCounter));
+        experimentCounter++;
+        entity.setEntityNumber(entityCounter, immiGeneProject.projectID);
         entity.setSecondaryName(secondaryName.toEntityString());
 
-        entity.setOrganismId("10900");
+        entity.setOrganismId(immiGeneProject.organismID.toString());
 
         System.out.println(entity.toString());
 
@@ -113,18 +127,22 @@ public class ImmiGeneTranslator implements IProjectTranslator {
         bioSample.setEntityNumber();
         bioSample.setSpace(immiGeneProject.space);
         bioSample.setParent(entity.getEntity());
-        bioSample.setExperiment(entity.getExperiment());
+        bioSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', experimentCounter));
 
         for(Sample sample : sampleList){
             secondaryName.setTissue(sample.id);
             secondaryName.setTimepoints(sample.timepoints);
             for(String timepoint : sample.timepoints){
+                bioSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', experimentCounter));
+                bioSample.setConditionOne(timepoint);
+                experimentCounter++;
                 for (int aliquot = 1; aliquot<= sample.aliquots; aliquot++){
                     // Set Aliquot
-                    secondaryName.setSampleAliquot(aliquot);
+                    //secondaryName.setSampleAliquot(0);
                     // Set bioSample fields
                     bioSample.setSecondaryName(secondaryName.toSampleString());
                     bioSample.setPrimaryTissue(sample.tissue);
+                    bioSample.setConditionTwo(sample.tissue);
                     // Test print
                     System.out.println(bioSample.toString());
                     tsvContent.append(String.format("%s%n", bioSample.toString()));
@@ -132,12 +150,18 @@ public class ImmiGeneTranslator implements IProjectTranslator {
                     AbstractQWizardRow testSample = factory.getWizardRow(RowTypes.TEST_SAMPLE);
                     AbstractQWizardRow singleRun = factory.getWizardRow(RowTypes.SINGLE_SAMPLE_RUN);
 
+                    if (aliquot > 1)
+                        continue;
+
                     for(Experiment experiment : sample.experiments){
+                        testSample.setConditionOne(timepoint);
+                        testSample.setConditionTwo(sample.tissue);
                         // Set experiment and aliquot
                         for (int expAliquot = 1; expAliquot<=experiment.aliquots; expAliquot++){
                             testSample.setParent(bioSample.getEntity());
                             testSample.setSpace(immiGeneProject.space);
                             testSample.setQSampleType(experiment.experiment);
+                            testSample.setExperiment(bioSample.getExperiment());
                             secondaryName.setExtractAliquot(expAliquot);
                             secondaryName.setExtractType(experiment.id);
 
@@ -146,6 +170,8 @@ public class ImmiGeneTranslator implements IProjectTranslator {
                             tsvContent.append(String.format("%s%n", testSample.toString()));
                             System.out.println(testSample.toString());
 
+
+                            // Trigger next barcode creation
                             testSample.nextID();
                         }
                     }
@@ -156,6 +182,22 @@ public class ImmiGeneTranslator implements IProjectTranslator {
                 secondaryName.nextTimePoint();
             }
         }
+    }
+
+
+    /**
+     * Create a SINGLE SAMPLE RUN instance for the QWizard
+     * @param testSample a TEST_SAMPLE object
+     */
+    private void createSingleSampleRun(AbstractQWizardRow testSample){
+        AbstractQWizardRow singleSampleRun = factory.getWizardRow(RowTypes.SINGLE_SAMPLE_RUN);
+        singleSampleRun.setEntityNumber();
+        singleSampleRun.setSpace(immiGeneProject.space);
+        singleSampleRun.setSecondaryName(secondaryName.toString());
+        singleSampleRun.setParent(testSample.getEntity());
+
+        tsvContent.append(String.format("%s%n", singleSampleRun.toString()));
+        System.out.println(String.format("%s", singleSampleRun.toString()));
     }
 
 

@@ -16,11 +16,11 @@ public abstract class AbstractQWizardRow{
     private BarcodeProducer barcodeFactory;
 
     public AbstractQWizardRow(){
-        this.columnFields = Arrays.asList(new String[12]).stream().map(value -> "").collect(Collectors.toList());
+        this.columnFields = Arrays.asList(new String[14]).stream().map(value -> "").collect(Collectors.toList());
     }
 
     public AbstractQWizardRow(BarcodeProducer barcodeFactory){
-        this.columnFields = Arrays.asList(new String[12]).stream().map(value -> "").collect(Collectors.toList());
+        this.columnFields = Arrays.asList(new String[14]).stream().map(value -> "").collect(Collectors.toList());
         this.barcodeFactory = barcodeFactory;
     }
 
@@ -28,8 +28,8 @@ public abstract class AbstractQWizardRow{
         this.columnFields.set(0, barcodeFactory.getBarcode());
     }
 
-    public void setEntityNumber(int number) {
-        this.columnFields.set(0, String.format("%sENTITY-%d", this.getSpace(), number));
+    public void setEntityNumber(int number, String project) {
+        this.columnFields.set(0, String.format("%sENTITY-%d", project, number));
     }
 
     public void setIdentifier(String identifier){
@@ -99,5 +99,9 @@ public abstract class AbstractQWizardRow{
     public String toString(){
         return String.join("\t", columnFields);
     }
+
+    public void setConditionOne(String condition){this.columnFields.set(12, condition);}
+
+    public void setConditionTwo(String condition){this.columnFields.set(13, condition);}
 
 }

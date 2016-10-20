@@ -1,85 +1,62 @@
 # Example YAML configuration file for the template builder.
 
 !org.qbic.collections.ImmiGeneProject
-numberOfPatients: 10
+numberOfPatients: 1   # Später 60
 
-space: QIMMU
+projectID: QIMMU   # vorläufige QBiC Project ID
 
-# Donor configuration
-donor:
-    id: D
-    samples:
-        - !org.qbic.collections.Sample
-           tissue: BLOOD_PLASMA
-           id: B
-           timepoints:
-               - t-1
-           aliquots: 2
-           experiments:
-               - !org.qbic.collections.Experiment
-                 experiment: exon
-                 id: D
-                 aliquots: 5
-               - !org.qbic.collections.Experiment
-                  experiment: immuno
-                  id: I
-                  aliquots: 5
-        - !org.qbic.collections.Sample
-           tissue: URINE
-           id: U
-           timepoints:
-               - t-1
-           aliquots: 2
-           experiments:
-               - !org.qbic.collections.Experiment
-                 experiment: metagenome
-                 id: D
-                 aliquots: 5
-               - !org.qbic.collections.Experiment
-                  experiment: immuno
-                  id: I
-                  aliquots: 5
-        - !org.qbic.collections.Sample
-           tissue: FECES
-           id: F
-           timepoints:
-               - t-1
-           aliquots: 2
-           experiments:
-               - !org.qbic.collections.Experiment
-                 experiment: immuno
-                 id: I
-                 aliquots: 5
-               - !org.qbic.collections.Experiment
-                  experiment: metagenome
-                  id: D
-                  aliquots: 5
+organismID: 9606   # NCBI ID
 
-# Recipient configuration
+space: IMMIGENE_TEST   # openBis SPACE
+
+# Empfänger Konfiguration
 recepient:
-    id: R
+    id: R  # Labelname: R:1:... dann R:2:.... usw.
     samples:
+        #
+        # Vollblut-Probe
+        #
         - !org.qbic.collections.Sample
-           tissue: Blood
-           id: B
+           tissue: WHOLE_BLOOD
+           id: B    # Labelname z.B. R:1:t-1:B:...
            timepoints:
                - t-1
                - t5
                - t6
                - t7
-           aliquots: 2
+           aliquots: 1  # Labelname z.B. R:1:t-1:B:1
            experiments:
-               - !org.qbic.collections.Experiment
-                 experiment: exon
-                 id: D
-                 aliquots: 5
-               - !org.qbic.collections.Experiment
-                  experiment: immuno
-                  id: I
-                  aliquots: 5
+               - !org.qbic.collections.Experiment # für Exomsequenzierung oder Genotyp.
+                 experiment: DNA
+                 id: D   # Labelname z.B. R:1:t-1:B:1:D:1
+                 aliquots: 1
+               - !org.qbic.collections.Experiment  # Stimulation mit Immunoaktivatoren
+                  experiment: RNA
+                  id: R   # Labelname z.B. R:1:t-1:B:1:R:1
+                  aliquots: 20
+        #
+        # Evtl Blutplasma
+        #
         - !org.qbic.collections.Sample
-           tissue: Urine
-           id: U
+             tissue: BLOOD_PLASMA
+             id: BP    # Labelname z.B. R:1:t-1:BP:...
+             timepoints:
+                 - t-1
+                 - t5
+                 - t6
+                 - t7
+             aliquots: 1
+             experiments:
+              - !org.qbic.collections.Experiment
+                experiment: PROTEINS
+                id: I   # Labelname z.B. R:1:t-1:BP:1:I:1 (für immunologische Analyse)
+                aliquots: 2
+        #
+        # Urin-Probe
+        #
+        - !org.qbic.collections.Sample
+           tissue: URINE
+           id: U    # Labelname z.B. R:1:t-1:U:...
            timepoints:
                - t-1
                - t0
@@ -90,19 +67,18 @@ recepient:
                - t5
                - t6
                - t7
-           aliquots: 2
+           aliquots: 1
            experiments:
                - !org.qbic.collections.Experiment
-                 experiment: metagenome
-                 id: D
-                 aliquots: 5
-               - !org.qbic.collections.Experiment
-                  experiment: immuno
-                  id: I
-                  aliquots: 5
+                 experiment: SMALLMOLECULES
+                 id: M    # Labelname z.B. R:1:t-1:U:1:M:1 (für Metabolomanalyse)
+                 aliquots: 1
+        #
+        # Stuhl-Probe
+        #
         - !org.qbic.collections.Sample
-           tissue: Feces
-           id: F
+           tissue: FECES
+           id: F  # Labelname z.B. R:1:t-1:F:...
            timepoints:
               - t-1
               - t0
@@ -113,13 +89,103 @@ recepient:
               - t5
               - t6
               - t7
-           aliquots: 2
+           aliquots: 1
+           experiments:
+                # Vorbereitet für Metabolomanalyse
+               - !org.qbic.collections.Experiment
+                  experiment: SMALLMOLECULES
+                  id: M    # Labelname z.B. R:1:t-1:F:1:M:1 (für Metabolomanalyse)
+                  aliquots: 2
+                # Vorbereitet für immunologische Analyse
+               - !org.qbic.collections.Experiment
+                 experiment: PROTEINS
+                 id: I     # Labelname z.B. R:1:t-1:F:1:I:1 (für immunologische Analyse)
+                 aliquots: 2
+                # Vorbereitet für Exomsequenzierung
+               - !org.qbic.collections.Experiment
+                  experiment: DNA
+                  id: D     # Labelname z.B. R:1:t-1:F:1:D:1 (für Metagenomanalyse)
+                  aliquots: 6
+
+
+# ---- Ende Konfiguration Empfänger
+
+# ---- Beginn Konfiguration Spender
+donor:
+    id: D  # Labelname: R:1:... dann R:2:.... usw.
+    samples:
+        #
+        # Vollblut-Probe
+        #
+        - !org.qbic.collections.Sample
+           tissue: WHOLE_BLOOD
+           id: B    # Labelname z.B. R:1:t-1:B:...
+           timepoints:
+               - t-1
+           aliquots: 1  # Labelname z.B. R:1:t-1:B:1
+           experiments:
+               - !org.qbic.collections.Experiment # für Exomsequenzierung oder Genotyp.
+                 experiment: DNA
+                 id: D   # Labelname z.B. R:1:t-1:B:1:D:1
+                 aliquots: 1
+               - !org.qbic.collections.Experiment  # Stimulation mit Immunoaktivatoren
+                  experiment: RNA
+                  id: R   # Labelname z.B. R:1:t-1:B:1:R:1
+                  aliquots: 20
+        #
+        # Evtl Blutplasma
+        #
+        - !org.qbic.collections.Sample
+             tissue: BLOOD_PLASMA
+             id: BP    # Labelname z.B. R:1:t-1:BP:...
+             timepoints:
+                 - t-1
+             aliquots: 1
+             experiments:
+              - !org.qbic.collections.Experiment
+                experiment: PROTEINS
+                id: I   # Labelname z.B. R:1:t-1:BP:1:I:1 (für immunologische Analyse)
+                aliquots: 2
+        #
+        # Urin-Probe
+        #
+        - !org.qbic.collections.Sample
+           tissue: URINE
+           id: U    # Labelname z.B. R:1:t-1:U:...
+           timepoints:
+               - t-1
+           aliquots: 1
            experiments:
                - !org.qbic.collections.Experiment
-                 experiment: immuno
-                 id: I
-                 aliquots: 5
+                 experiment: SMALLMOLECULES
+                 id: M    # Labelname z.B. R:1:t-1:U:1:M:1 (für Metabolomanalyse)
+                 aliquots: 1
+        #
+        # Stuhl-Probe
+        #
+        - !org.qbic.collections.Sample
+           tissue: FECES
+           id: F  # Labelname z.B. R:1:t-1:F:...
+           timepoints:
+              - t-1
+           aliquots: 1
+           experiments:
+                # Vorbereitet für Metabolomanalyse
                - !org.qbic.collections.Experiment
-                  experiment: metagenome
-                  id: D
-                  aliquots: 5
+                  experiment: SMALLMOLECULES
+                  id: M    # Labelname z.B. R:1:t-1:F:1:M:1 (für Metabolomanalyse)
+                  aliquots: 2
+                # Vorbereitet für immunologische Analyse
+               - !org.qbic.collections.Experiment
+                 experiment: PROTEINS
+                 id: I     # Labelname z.B. R:1:t-1:F:1:I:1 (für immunologische Analyse)
+                 aliquots: 2
+                # Vorbereitet für Exomsequenzierung
+               - !org.qbic.collections.Experiment
+                  experiment: DNA
+                  id: D     # Labelname z.B. R:1:t-1:F:1:D:1 (für Metagenomanalyse)
+                  aliquots: 6
+
+
+
+

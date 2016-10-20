@@ -15,7 +15,7 @@ import java.util.List;
 public class WizardHeader {
 
     public static String getHeader(){
-        List<String> columnList = Arrays.asList(new String[12]);
+        List<String> columnList = Arrays.asList(new String[14]);
 
         columnList.set(0, "Identifier");
         columnList.set(1, "SAMPLE TYPE");
@@ -29,6 +29,8 @@ public class WizardHeader {
         columnList.set(9, "Q_NCBI_ORGANISM");
         columnList.set(10, "Q_SAMPLE_TYPE");
         columnList.set(11, "Q_EXTERNALDB_ID");
+        columnList.set(12, "Condition: timepoints");
+        columnList.set(13, "Condition: tissue");
 
         return String.join("\t", columnList);
 

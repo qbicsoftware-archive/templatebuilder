@@ -40,7 +40,7 @@ public class Main {
         IProjectTranslator translator = new ImmiGeneTranslator(project);
 
         try{
-            translator.createTSV(Paths.get("/home/sven1103/Downloads/test.tsv"));
+            translator.createTSV(Paths.get("/home/sven1103/Downloads/immigene.tsv"));
         } catch (Exception e){
             System.err.println("Could not create the TSV file because of:");
             if (e.getMessage() == null){
