@@ -102,8 +102,7 @@ public class ImmiGeneTranslator implements IProjectTranslator {
 
         AbstractQWizardRow entity = factory.getWizardRow(RowTypes.ENTITY);
         entity.setSpace(immiGeneProject.space);
-        entity.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', experimentCounter));
-        experimentCounter++;
+        entity.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', 1));
         entity.setEntityNumber(entityCounter, immiGeneProject.projectID);
         entity.setSecondaryName(secondaryName.toEntityString());
 
@@ -127,15 +126,14 @@ public class ImmiGeneTranslator implements IProjectTranslator {
         bioSample.setEntityNumber();
         bioSample.setSpace(immiGeneProject.space);
         bioSample.setParent(entity.getEntity());
-        bioSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', experimentCounter));
+        bioSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', 2));
 
         for(Sample sample : sampleList){
             secondaryName.setTissue(sample.id);
             secondaryName.setTimepoints(sample.timepoints);
             for(String timepoint : sample.timepoints){
-                bioSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', experimentCounter));
+
                 bioSample.setConditionOne(timepoint);
-                experimentCounter++;
                 for (int aliquot = 1; aliquot<= sample.aliquots; aliquot++){
                     // Set Aliquot
                     //secondaryName.setSampleAliquot(0);
@@ -161,7 +159,17 @@ public class ImmiGeneTranslator implements IProjectTranslator {
                             testSample.setParent(bioSample.getEntity());
                             testSample.setSpace(immiGeneProject.space);
                             testSample.setQSampleType(experiment.experiment);
-                            testSample.setExperiment(bioSample.getExperiment());
+                            switch (experiment.experiment) {
+                                case "SMALLMOLECULES": testSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', 3));
+                                                        break;
+                                case "PROTEINS": testSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', 4));
+                                                 break;
+                                case "DNA": testSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', 5));
+                                            break;
+                                case "RNA": testSample.setExperiment(String.format("%s%s%s",immiGeneProject.projectID, 'E', 6));
+                                            break;
+                            }
+                            //testSample.setExperiment(bioSample.getExperiment());
                             secondaryName.setExtractAliquot(expAliquot);
                             secondaryName.setExtractType(experiment.id);
 

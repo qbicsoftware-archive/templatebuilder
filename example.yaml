@@ -1,13 +1,13 @@
 # Example YAML configuration file for the template builder.
 
 !org.qbic.collections.ImmiGeneProject
-numberOfPatients: 1   # Später 60
+numberOfPatients: 40   # Später 60
 
-projectID: QIMMU   # vorläufige QBiC Project ID
+projectID: QVOKR   # vorläufige QBiC Project ID
 
 organismID: 9606   # NCBI ID
 
-space: IMMIGENE_TEST   # openBis SPACE
+space: MFT_IMMIGENE   # openBis SPACE
 
 # Empfänger Konfiguration
 recepient:
